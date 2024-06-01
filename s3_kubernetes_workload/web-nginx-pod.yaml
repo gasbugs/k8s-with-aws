@@ -1,0 +1,24 @@
+# 연습 문제
+# 현재 시스템에는 몇 개의 namespace가 존재하는가? 4
+# 쿠버네티스의 DNS 서비스는 어느 네임스페이스에 속해있는가? kube-system
+# kube-system에는 몇 개의 파드가 존재하는가? 6
+
+# web-service 네임스페이스를 생성하고 nginx 파드를 배치하라.
+# pod image: nginx
+# pod name: web-nginx
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: web-service
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web-nginx
+  namespace: web-service
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80

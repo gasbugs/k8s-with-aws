@@ -1,0 +1,37 @@
+# 연습 문제
+# 다음 mongo 이미지를 사용하여 업데이트와 롤백을 실행하라.
+# 모든 revision 내용은 기록돼야 한다. 
+# mongo:4.2 이미지를 사용하여 deployment를 생성하라.
+# Replicas: 10
+# maxSurge: 50%
+# maxUnavailable: 50%
+# mongo:4.4 롤링 업데이트를 수행하라.
+# mongo:4.2로 롤백을 수행하라.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-deployment
+  annotations:
+    kubernetes.io/change-cause: "image created to mongo:4.2"
+  labels:
+    app: mongo
+spec:
+  strategy:
+    rollingUpdate: 
+      maxSurge: 50%
+      maxUnavailable: 50%
+    type: RollingUpdate
+  replicas: 10
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+      - name: mongo
+        image: mongo:4.2
+        ports:
+        - containerPort: 27017

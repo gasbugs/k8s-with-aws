@@ -1,0 +1,20 @@
+# kubectl create secret docker-registry harbor-cred --docker-server=18.209.59.9 --docker-username=admin --docker-password=Test1234 -n flask-ns
+apiVersion: v1
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyIxOC4yMDkuNTkuOSI6eyJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiJUZXN0MTIzNCIsImF1dGgiOiJZV1J0YVc0NlZHVnpkREV5TXpRPSJ9fX0=
+kind: Secret
+metadata:
+  name: harbor-cred
+type: kubernetes.io/dockerconfigjson
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: 18.209.59.9/admin/nginx
+    imagePullPolicy: Always
+  imagePullSecrets:
+  - name: harbor-cred 

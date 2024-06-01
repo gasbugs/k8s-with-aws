@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongo-pv # 이름은 중요치 않음
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: "" # 
+  awsElasticBlockStore:
+    volumeID: "vol-0386e4735d34bfe3e"
+    fsType: ext4

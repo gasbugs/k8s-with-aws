@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostpath-http-go
+spec:
+  containers:
+  - image: gasbugs/http-go
+    name: http-go
+    volumeMounts:
+    - mountPath: /test-dir
+      name: test-volume
+  volumes:
+  - name: test-volume
+    hostPath:
+      path: /var/log # 노드 파일시스템의 어느 디렉토리에 마운트할지?
+      type: Directory

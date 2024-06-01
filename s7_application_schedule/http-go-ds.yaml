@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: http-go
+spec:
+  selector:
+    matchLabels:
+      app: http-go
+  template:
+    metadata:
+      labels:
+        app: http-go
+    spec:
+      containers:
+      - name: http-go
+        image: gasbugs/http-go

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  namespace: dev1 # 네임스페이스를 정하는 첫 번째 방법 (우선)
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80
+
+# 네임스페이스를 정하는 두 번째 방법
+# kubectl apply -f dev1-nginx-pod.yaml -n dev1

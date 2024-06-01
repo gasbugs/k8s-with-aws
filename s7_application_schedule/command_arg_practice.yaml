@@ -1,0 +1,15 @@
+# 연습 문제
+# busybox 이미지를 사용하는 busybox 포드를 만들어라.
+# busybox 포드가 유지되는가? 그렇지 않다면 그 이유는 무엇인가?
+# busybox를 장시간 유지하기 위해 장시간 sleep하는 명령어와 아규먼트를 추가하여 실행하라.
+# busybox가 계속 유지될 수 있는가? 셸을 접속하여 확인하자.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    command: ["sleep"]
+    args: ["3000"]

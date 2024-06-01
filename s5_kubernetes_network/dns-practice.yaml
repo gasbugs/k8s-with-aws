@@ -1,0 +1,67 @@
+# 연습 문제
+# 네임스페이스 blue에 jenkins 이미지를 사용하는 jenkins-deployment 디플로이먼트를 생성하고 서비스 jenkins-svc를 생성하라.
+# red 네임스페이스의 gasbugs/http-go 이미지의 curl을 사용하여 pod jenkins로 http 요청을 수행하라.
+# 확인 명령어: kubectl exec http-go -n red -- curl jenkins-svc.blue
+---
+# blue namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: blue
+---
+# jenkins-deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins-deployment
+  namespace: blue
+  labels:
+    app: jenkins
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: jenkins
+  template:
+    metadata:
+      labels:
+        app: jenkins
+    spec:
+      containers:
+      - name: jenkins
+        image: jenkins/jenkins
+        ports:
+        - containerPort: 8080
+---
+# jenkins-svc
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-svc
+  namespace: blue
+spec:
+  selector:
+    app: jenkins
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+---
+# blue namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: red
+---
+# 파드
+apiVersion: v1
+kind: Pod
+metadata:
+  name: http-go
+  namespace: red
+spec:
+  containers:
+  - name: http-go
+    image: gasbugs/http-go
+    ports:
+    - containerPort: 8080

@@ -1,0 +1,29 @@
+# 연습 문제
+# john 유저에게 dev1 네임스페이스에 대한 파드, 레플리카셋, 디플로이먼트를 조회, 생성하고 삭제할 수 있는 권한을 부여하라.
+# kubectl get pod --context=john@kubernetes
+# kubectl create deployment nx --image=nginx --replicas=3 --context=john@kubernetes
+# kubectl delete rs test-rs --context=john@kubernetes
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: dev1
+  name: deployment-manager
+rules:
+- apiGroups: ["", "apps"]
+  resources: ["pods", "pods/log", "deployments", "replicasets"]
+  verbs: ["list", "create", "get", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: deployment-manager
+  namespace: dev1
+subjects:
+- kind: User
+  name: john 
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role 
+  name: deployment-manager 
+  apiGroup: rbac.authorization.k8s.io

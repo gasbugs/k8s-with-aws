@@ -1,0 +1,16 @@
+# 파드는 5가지 부분으로 나뉜다.
+# 1. apiVersion: 쿠버네티스 API를 의미(형식: 그룹/버전), 수정할 일이 거의 없음
+# 2. kind: 리소스의 종류, 수정할 일이 거의 없음
+# 3. metadata: 일반 정보 (이름, 주석, 레이블 ... )
+# 4. spec: 실행 정보 (컨테이너 이름, 이미지, 포트, 볼륨 ... )
+# 5. status: 클러스터가 작성하는 정보
+apiVersion: v1 # core 그룹은 생략 가능
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80

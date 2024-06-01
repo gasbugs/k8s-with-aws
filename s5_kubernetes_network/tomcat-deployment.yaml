@@ -1,0 +1,54 @@
+# 연습 문제
+# consol/tomcat-7.0 이미지를 사용해 톰캣 디플로이먼트 배포하기
+# tomcat을 노드포트로 서비스하기(30003번 포트 사용)
+# tomcat을 로드밸런스로 서비스하기(80번 포트 사용)
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomcat-deployment
+  labels:
+    app: tomcat
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tomcat
+  template:
+    metadata:
+      labels:
+        app: tomcat
+    spec:
+      containers:
+      - name: tomcat
+        image: consol/tomcat-7.0
+        ports:
+        - containerPort: 8080
+---
+# NodePort
+apiVersion: v1
+kind: Service
+metadata:
+  name: tc-np
+spec:
+  type: NodePort
+  selector:
+    app: tomcat
+  ports:
+    - port: 80 # 서비스 포트
+      targetPort: 8080 # 컨테이너 포트
+      nodePort: 30003 # 노드 포트
+---
+# LoadBalancer
+apiVersion: v1
+kind: Service
+metadata:
+  name: tc-lb
+spec:
+  type: LoadBalancer
+  selector:
+    app: tomcat
+  ports:
+    - port: 80 # 서비스 포트
+      targetPort: 8080 # 컨테이너 포트
+      nodePort: 30004 # 노드 포트

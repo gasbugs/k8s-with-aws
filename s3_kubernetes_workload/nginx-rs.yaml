@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx
+spec:
+  replicas: 3 # 복제본 수 (kubectl scale/apply/edit)
+  selector:
+    matchLabels:
+      app: nginx # 파드를 선택할 수 있도록 설정
+  # 파드 템플릿
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx 

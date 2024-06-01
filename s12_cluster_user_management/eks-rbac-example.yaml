@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: developer
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: developer-role
+  namespace: developer
+rules:
+  - apiGroups: ["*"]
+    resources: ["pods"]
+    verbs: ["list", "get", "create", "update"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: developer-rolebinding
+  namespace: developer
+subjects:
+  - kind: Group
+    name: developer
+roleRef:
+  kind: Role
+  name: developer-role
+  apiGroup: rbac.authorization.k8s.io

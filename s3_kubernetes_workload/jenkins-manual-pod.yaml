@@ -1,0 +1,17 @@
+#연습 문제
+#1. 모든 리소스 삭제
+#2. YAML을 사용하여 도커 이미지 jenkins/jenkins로 jenkins-manual 파드를 생성하기
+#3. jenkins-manual 파드 안에서 curl 명령어로 로컬호스트:8080 접속하기
+#4. jenkins-manual 파드의 포트를 8888로 포트포워딩하기(웹서비스 접속)
+#5. 현재 jenkins-manual의 설정을 yaml로 출력하기
+#6. 패스워드를 찾아서 로그인해 설치화면으로 넘어가기
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jenkins-manual
+spec:
+  containers:
+  - name: jenkins-manual
+    image: jenkins/jenkins
+    ports:
+    - containerPort: 8080 # 단순 정보

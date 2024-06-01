@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dapi-test-pod-2
+spec:
+  containers:
+    - name: test-container
+      image: registry.k8s.io/busybox
+      command: [ "/bin/sh", "-c", "sleep 3000" ]
+      volumeMounts:
+      - name: config-volume
+        mountPath: /etc/config
+  volumes:
+    - name: config-volume
+      configMap:
+        name: httpd-conf # 컨피그맵 이름만 전달하면 내부의 모든 키가 파일로 구성된다. 
+  restartPolicy: Never

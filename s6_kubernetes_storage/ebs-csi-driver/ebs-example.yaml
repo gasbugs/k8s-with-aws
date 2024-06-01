@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-ebs
+spec:
+  nodeName: ip-10-0-87-56.ec2.internal # 특정 노드에서 파드가 배포되도록 고정한다. (디스크와 AZ가 같은 곳에 의도적으로 배치)
+  containers:
+  - image: registry.k8s.io/test-webserver
+    name: test-container
+    volumeMounts:
+    - mountPath: /test-ebs
+      name: test-volume
+  volumes:
+  - name: test-volume
+    # 이 AWS EBS 볼륨은 이미 존재해야 한다.
+    awsElasticBlockStore:
+      volumeID: "vol-0d8105d8948e19973"
+      fsType: ext4

@@ -1,0 +1,57 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: http-go-v1-np
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: http-go-v1
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: default
+          podSelector:
+            matchLabels:
+              app: http-go-v2
+      ports:
+        - protocol: TCP
+          port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: http-go-v2-np
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: http-go-v2
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: default
+          podSelector:
+            matchLabels:
+              app: http-go-v3
+      ports:
+        - protocol: TCP
+          port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: http-go-v3-np
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: http-go-v3
+  policyTypes:
+    - Ingress

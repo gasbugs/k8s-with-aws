@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-deployment
+  annotations:
+    kubernetes.io/change-cause: "image created to mongo:4.4"
+  labels:
+    app: mongo
+spec:
+  strategy:
+    rollingUpdate: 
+      maxSurge: 50%
+      maxUnavailable: 50%
+    type: RollingUpdate
+  replicas: 10
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+      - name: mongo
+        image: mongo:4.4
+        ports:
+        - containerPort: 27017

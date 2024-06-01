@@ -1,0 +1,48 @@
+# 연습 문제
+# httpd를 사용할 수 있도록 pod, pvc, storageclass 정의하여 동적 프로비저닝 수행하라.
+# fast라는 이름을 가진 스토리지 클래스를 구성하고 ssd를 서비스하도록 설정하라.
+# html-data라는 이름을 가진 pvc를 구성해 10Gi 용량을 fast 스토리지클래스에 요청하라.
+# httpd 이미지를 사용해 파드를 구성하고 html-data pvc를 html 디렉토리에 마운트한다.
+# httpd 80포트에 접근하면 `index of /` 페이지가 나타나야 한다.
+
+
+---
+# storageclass
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: fast
+provisioner: kubernetes.io/aws-ebs
+parameters:
+  type: gp2
+---
+# pvc 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: html-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: fast
+---
+# pod 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: httpd
+spec:
+  containers:
+    - name: httpd
+      image: httpd
+      volumeMounts:
+      - mountPath: "/usr/local/apache2/htdocs/" # 컨테이너 개발자가 정한다. 
+        name: html-volume
+  volumes:
+    - name: html-volume
+      persistentVolumeClaim:
+        claimName: html-data # 생성할 pvc 이름으로 지정해야 한다.

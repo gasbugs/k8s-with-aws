@@ -1,0 +1,29 @@
+# 연습 문제
+# httpd 디플로이먼트를 httpd-deploy를 생성하라.
+# httpd 디플로이먼트로 배포되는 앱을 app: httpd-test로 레이블링하라.
+# 디플로이먼트로 배포된 파드를 하나 삭제하고 이후 생성되는 파드를 관찰하라.
+# 새로 생성된 파드의 레이블을 바꾸어 Deployment의 관리 영역에서 벗어나게 하라.
+# scale 명령을 사용해 레플리카 수를 5개로 정의하라.
+# edit 기능을 사용하여 3로 스케일인하라.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd-deploy
+  labels:
+    app: httpd-test
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: httpd-test
+  template:
+    metadata:
+      labels:
+        app: httpd-test
+    spec:
+      containers:
+      - name: httpd
+        image: httpd
+        ports:
+        - containerPort: 80

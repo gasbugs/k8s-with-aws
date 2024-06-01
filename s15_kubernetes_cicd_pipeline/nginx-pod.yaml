@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: 18.209.59.9/admin/nginx
+    imagePullPolicy: Always
+  imagePullSecrets:
+  - name: regcred
